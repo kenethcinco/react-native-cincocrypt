@@ -13,6 +13,24 @@
 import Cincocrypt from 'react-native-cincocrypt';
 
 // TODO: What to do with the module?
-Cincocrypt;
+
+CincoCrypt.encrypt({
+            plaintext: 'input here',
+            keyword: 'your key'
+        },(response)=>{
+        	//do here
+   		}
+});
+
+ CincoCrypt.decrypt({
+            ciphertext: 'cipherText',
+            keyword: 'supposed key'
+            },(response)=>{
+                //do here
+            });
+
+
 ```
-hello world this is new readme
+
+
+
