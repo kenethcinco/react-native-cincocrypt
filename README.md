@@ -16,7 +16,9 @@ import Cincocrypt from 'react-native-cincocrypt';
 
 CincoCrypt.encrypt({
             plaintext: 'input here',
-            keyword: 'your key'
+            keyword: 'your key',
+            startAt: '32',
+            endAt: '126'
         },(response)=>{
         	//do here
    		}
@@ -24,7 +26,9 @@ CincoCrypt.encrypt({
 
  CincoCrypt.decrypt({
             ciphertext: 'cipherText',
-            keyword: 'supposed key'
+            keyword: 'supposed key',
+            startAt: '32',
+            endAt: '126'
             },(response)=>{
                 //do here
             });

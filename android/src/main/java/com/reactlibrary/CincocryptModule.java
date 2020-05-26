@@ -39,6 +39,8 @@ public class CincocryptModule extends ReactContextBaseJavaModule {
 
             String plaintext = options.hasKey("plaintext") ? options.getString("plaintext") : "";
             String keyword = options.hasKey("keyword")? options.getString("keyword"):"";
+            int startAt = options.hasKey("startAt")? options.getInt("startAt"):0;
+            int endAt = options.hasKey("endAt")? options.getInt("endAt"):127;
             String f_cipherRes = "";
             
             //vigenere cipher algorithm
@@ -47,13 +49,13 @@ public class CincocryptModule extends ReactContextBaseJavaModule {
                 if(j == keyword.length())
                     j=0;
 
-                f_cipherRes  = f_cipherRes + charEncrypt(plaintext.charAt(i),32,126,keyword.charAt(j));
+                f_cipherRes  = f_cipherRes + charEncrypt(plaintext.charAt(i),startAt,endAt,keyword.charAt(j));
             }
             
             //enhanced caesar algorithm
             int keyword2 = ((plaintext.split(" "))[1]).length();
             for(int i = 0;i<f_cipherRes.length();i++){
-                s_cipherRes = s_cipherRes + charEncrypt(f_cipherRes.charAt(i),32,126,keyword2);
+                s_cipherRes = s_cipherRes + charEncrypt(f_cipherRes.charAt(i),startAt,endAt,keyword2);
             }s_cipherRes = s_cipherRes + keyword2;
 
 
@@ -69,19 +71,21 @@ public class CincocryptModule extends ReactContextBaseJavaModule {
 
             String cipherText = options.hasKey("ciphertext") ? options.getString("ciphertext") : "";
             String keyword2 = options.hasKey("keyword")? options.getString("keyword"):"";
+            int startAt = options.hasKey("startAt")? options.getInt("startAt"):0;
+            int endAt = options.hasKey("endAt")? options.getInt("endAt"):127;
             int keyword = Character.getNumericValue(cipherText.charAt(cipherText.length()-1));
             String f_plaintext = "";
 
 
             for(int i=0;i<cipherText.length()-1;i++) {
-                f_plaintext = f_plaintext + charDecrypt(cipherText.charAt(i),32,126,keyword);
+                f_plaintext = f_plaintext + charDecrypt(cipherText.charAt(i),startAt,endAt,keyword);
             }
 
             for(int i =0, j=0;i<f_plaintext.length();i++,j++){
             
                 if(j == keyword2.length())
                     j=0;
-                s_plainText = s_plainText + charDecrypt(f_plaintext.charAt(i),32,126,keyword2.charAt(j));
+                s_plainText = s_plainText + charDecrypt(f_plaintext.charAt(i),startAt,endAt,keyword2.charAt(j));
             }
 
           
