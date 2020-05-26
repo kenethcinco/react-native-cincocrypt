@@ -21,6 +21,17 @@ public class CincocryptModule extends ReactContextBaseJavaModule {
         return "Cincocrypt";
     }
 
+    
+    private char charEncrypt(char ch,int startAt,int endAt,int key){
+        int mod = endAt - startAt + 1;
+        return (char)((ch+key-startAt)%mod+startAt);
+    }
+    private char charDecrypt(char ch,int startAt,int endAt,int key){
+        int mod = endAt - startAt + 1;
+        return (char)((ch-key-endAt)%mod+endAt);
+    }
+   
+
 
     @ReactMethod
     public void encrypt(ReadableMap options, final Callback callback) {
@@ -28,54 +39,28 @@ public class CincocryptModule extends ReactContextBaseJavaModule {
 
             String plaintext = options.hasKey("plaintext") ? options.getString("plaintext") : "";
             String keyword = options.hasKey("keyword")? options.getString("keyword"):"";
+            int startAt = options.hasKey("startAt")? options.getInt("startAt"):0;
+            int endAt = options.hasKey("endAt")? options.getInt("endAt"):127;
             String f_cipherRes = "";
             
             //vigenere cipher algorithm
             for(int i=0,j=0;i<plaintext.length();i++,j++){
 
-                if(plaintext.charAt(i)==' '){
-                    i++; 
-                    f_cipherRes  = f_cipherRes + ' ';
-                }
-
                 if(j == keyword.length())
                     j=0;
 
-                if(!Character.isDigit(plaintext.charAt(i))){
-                    if(Character.isUpperCase(plaintext.charAt(i))){
-
-                        f_cipherRes  = f_cipherRes + (char)((plaintext.charAt(i)+keyword.charAt(j)-65)%26 + 65 );
-                    }else{
-                        f_cipherRes  = f_cipherRes + (char)((plaintext.charAt(i)+keyword.charAt(j)-97)%26 + 97 );
-                    }
-                }else{
-                    f_cipherRes  = f_cipherRes + (char)((plaintext.charAt(i)+keyword.charAt(j)-48)%10 + 48);   
-                }
+                f_cipherRes  = f_cipherRes + charEncrypt(plaintext.charAt(i),startAt,endAt,keyword.charAt(j));
             }
             
-            String keyword2 = (plaintext.split(" "))[1];
-
             //enhanced caesar algorithm
+            int keyword2 = ((plaintext.split(" "))[1]).length();
             for(int i = 0;i<f_cipherRes.length();i++){
-                if(f_cipherRes.charAt(i)==' '){
-                    i++;
-                    s_cipherRes = s_cipherRes + ' ';
-                }
-
-                if(!Character.isDigit(f_cipherRes.charAt(i))){
-                    if(Character.isUpperCase(f_cipherRes.charAt(i))){
-                        s_cipherRes = s_cipherRes + (char)((f_cipherRes.charAt(i) + (char) keyword2.length()-65)%26+65);
-                    }else{
-                        s_cipherRes = s_cipherRes + (char)((f_cipherRes.charAt(i) + (char) keyword2.length()-97)%26+97);
-                    }
-                }else{
-                    s_cipherRes = s_cipherRes + (char)((f_cipherRes.charAt(i) + (char) keyword2.length()-48)%10+48);
-                }
-
-            }s_cipherRes = (s_cipherRes + keyword2.length());
+                s_cipherRes = s_cipherRes + charEncrypt(f_cipherRes.charAt(i),startAt,endAt,keyword2);
+            }s_cipherRes = s_cipherRes + keyword2;
 
 
         }catch(Exception e){
+            callback.invoke("kulang ang option na imo gebutang"); 
         }
         callback.invoke(s_cipherRes);
         s_cipherRes = "";//resett
@@ -86,46 +71,21 @@ public class CincocryptModule extends ReactContextBaseJavaModule {
 
             String cipherText = options.hasKey("ciphertext") ? options.getString("ciphertext") : "";
             String keyword2 = options.hasKey("keyword")? options.getString("keyword"):"";
+            int startAt = options.hasKey("startAt")? options.getInt("startAt"):0;
+            int endAt = options.hasKey("endAt")? options.getInt("endAt"):127;
             int keyword = Character.getNumericValue(cipherText.charAt(cipherText.length()-1));
             String f_plaintext = "";
 
 
             for(int i=0;i<cipherText.length()-1;i++) {
-
-                if(cipherText.charAt(i)==' '){
-                    i++;
-                    f_plaintext = f_plaintext + ' ';
-                }
-                if(!Character.isDigit(cipherText.charAt(i))){
-                    if(Character.isUpperCase(cipherText.charAt(i))){
-                        f_plaintext = f_plaintext + (char)((cipherText.charAt(i) - (char) keyword-90)%26+90);
-                    }else{
-                        f_plaintext = f_plaintext + (char)((cipherText.charAt(i) - (char) keyword-122)%26+122);
-                    }
-                }else{
-                    f_plaintext = f_plaintext + (char)((cipherText.charAt(i) - (char) keyword-57)%10+57);
-                }
+                f_plaintext = f_plaintext + charDecrypt(cipherText.charAt(i),startAt,endAt,keyword);
             }
 
             for(int i =0, j=0;i<f_plaintext.length();i++,j++){
-                if(f_plaintext.charAt(i)==' '){
-                    i++;
-                    s_plainText = s_plainText + ' ';
-                }
+            
                 if(j == keyword2.length())
                     j=0;
-
-                if(!Character.isDigit(f_plaintext.charAt(i))){
-                    if(Character.isUpperCase(f_plaintext.charAt(i))){
-                       s_plainText = s_plainText + (char) ((f_plaintext.charAt(i)-keyword2.charAt(j)-90)%26+90);
-                    }else{
-                       s_plainText = s_plainText + (char) ((f_plaintext.charAt(i)-keyword2.charAt(j)-122)%26+122);
-                    }
-                }else{
-                    s_plainText = s_plainText + (char) ((f_plaintext.charAt(i)-keyword2.charAt(j)-57)%10+57);
-                }
-             
-                
+                s_plainText = s_plainText + charDecrypt(f_plaintext.charAt(i),startAt,endAt,keyword2.charAt(j));
             }
 
           
