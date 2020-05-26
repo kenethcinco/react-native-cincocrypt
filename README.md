@@ -13,7 +13,9 @@
 import Cincocrypt from 'react-native-cincocrypt';
 
 // TODO: What to do with the module?
+just include in the option; the startAt(Unicode) and the endAT(Unicode)
 
+##Encryption Method
 CincoCrypt.encrypt({
             plaintext: 'input here',
             keyword: 'your key',
@@ -23,7 +25,7 @@ CincoCrypt.encrypt({
         	//do here
    		}
 });
-
+##Decryption Method
  CincoCrypt.decrypt({
             ciphertext: 'cipherText',
             keyword: 'supposed key',
