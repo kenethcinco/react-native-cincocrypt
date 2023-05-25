@@ -16,8 +16,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-cincocrypt.git",
-    "baseUrl": "https://github.com/github_account/react-native-cincocrypt"
+    "url": "git+https://github.com/kenethcinco/react-native-cincocrypt.git",
+    "baseUrl": "https://github.com/kenethcinco/react-native-cincocrypt"
   },
   "keywords": [
     "react-native",
